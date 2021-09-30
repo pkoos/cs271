@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Not.hdl
 
+// Name: Paul Koos
+
 /**
  * Not gate:
  * out = not in
@@ -13,5 +15,5 @@ CHIP Not {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Nand(a=in, b=in, out=out);
 }

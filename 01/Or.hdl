@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Or.hdl
 
+// Name: Paul Koos
+
  /**
  * Or gate:
  * out = 1 if (a == 1 or b == 1)
@@ -14,5 +16,8 @@ CHIP Or {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Not(in=a, out=notA);
+	Not(in=b, out=notB);
+	And(a=notA, b=notB, out=notAAndNotB);
+	Not(in=notAAndNotB, out=out);
 }
