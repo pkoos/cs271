@@ -24,6 +24,11 @@ char welcome[MAX_LIMIT];
 strcpy(welcome, hello);
 strcat(welcome, " ");
 strcat(welcome, name);
-printf("%s!\n", welcome);
+printf("%s!\n\n", welcome);
+
+/** Exercise 2 **/
+    int name_len = strlen(name);
+    printf("Your name is %d characters long.\n\n", name_len);
+    // strlen()
     return 0;
 }
