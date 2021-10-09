@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Not16.hdl
 
+// Name: Paul Koos
+
 /**
  * 16-bit Not:
  * for i=0..15: out[i] = not in[i]
