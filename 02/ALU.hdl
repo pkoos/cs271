@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/02/ALU.hdl
 
+// Name: Paul Koos
+
 /**
  * The ALU (Arithmetic Logic Unit).
  * Computes one of the following functions:
@@ -42,5 +44,26 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+        // zx
+        Mux16(a=x, b=false, sel=zx, out=x0);
+
+        // nx
+        Not16(in=x0, out=notX0);
+        Mux16(a=x0, b=notX0, sel=nx, out=finalX);
+
+        // zy
+        Mux16(a=y, b=false, sel=zy, out=y0); // y == 0, y == 1
+        
+        // ny
+        Not16(in=y0, out=notY0);
+        Mux16(a=y0, b=notY0, sel=ny, out=finalY); // y == y, y == !y
+
+        //f
+        And16(a=finalX, b=finalY, out=xAndY);
+        Add16(a=finalX, b=finalY, out=xPlusY);
+        Mux16(a=xAndY, b=xPlusY, sel=f, out=eq);
+
+        //no
+        Not16(in=eq, out=notEq);
+        Mux16(a=eq, b=notEq, sel=no, out=out);
 }
