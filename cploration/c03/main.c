@@ -29,6 +29,8 @@ int main(int argc, const char *argv[]) {
         printf("[%04d] %s", line_num, line);
         fprintf(fout, "%s", line);
     }
+    fclose(fin);
+    fclose(fout);
 
     return 0;
 }
