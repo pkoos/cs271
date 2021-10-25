@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/03/b/RAM4K.hdl
 
+// Name: Paul Koos
+
 /**
  * Memory of 4K registers, each 16 bit-wide. Out holds the value
  * stored at the memory location specified by address. If load==1, then 
