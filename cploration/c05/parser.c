@@ -10,6 +10,8 @@ void parse(FILE * file) {
         if(!*line) { continue; }
         if(is_Atype(line)) {
             inst_type = 'A';
+        } else if(is_label(line)) {
+            inst_type = 'L';
         }
         printf("%c  %s\n",inst_type, line);
     }
@@ -34,4 +36,12 @@ char *strip(char *s) {
 
 bool is_Atype(const char *line) {
     return strncmp("@", line, 1) == 0;
+}
+
+bool is_label(const char *line) {
+    if(line[0] != '(' && line[strlen(line) -1] != ')') {
+        return false;
+    } else {
+        return true;
+    }
 }
