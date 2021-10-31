@@ -1,4 +1,4 @@
-#include <parser.h>
+#include "parser.h"
 
 int main(int args, char *argv[]) {
     if(args != 2) {

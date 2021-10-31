@@ -1,4 +1,4 @@
-#include <parser.h>
+#include "parser.h"
 
 void parse(FILE * file) {
     char line[MAX_LINE_LENGTH] = {0};
@@ -6,18 +6,18 @@ void parse(FILE * file) {
     while(fgets(line, sizeof(line), file)) {
         strip(line);
         if(!*line) { continue; }
-        printf("%s", line);
+        printf("%s\n", line);
     }
 }
 
 char *strip(char *s) {
-    char s_new[strlen(s)];
+    char s_new[strlen(s) + 1];
     int i = 0;
     
     for(char *s2 = s; *s2; s2++) {
         if(*s == '/' && *(s+1) == '/') { 
             break;
-        } else if(!isspace(*s)) {
+        } else if(!isspace(*s2)) {
             s_new[i++] = *s2;
         }
     }
