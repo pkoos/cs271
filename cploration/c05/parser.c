@@ -12,6 +12,8 @@ void parse(FILE * file) {
             inst_type = 'A';
         } else if(is_label(line)) {
             inst_type = 'L';
+        } else if(is_Ctype(line)) {
+            inst_type = 'C';
         }
         printf("%c  %s\n",inst_type, line);
     }
@@ -22,7 +24,7 @@ char *strip(char *s) {
     int i = 0;
     
     for(char *s2 = s; *s2; s2++) {
-        if(*s == '/' && *(s+1) == '/') { 
+        if(*s2 == '/' && *(s2+1) == '/') { 
             break;
         } else if(!isspace(*s2)) {
             s_new[i++] = *s2;
@@ -44,4 +46,8 @@ bool is_label(const char *line) {
     } else {
         return true;
     }
+}
+
+bool is_Ctype(const char *line) {
+    return !is_Atype(line) && !is_label(line);
 }
