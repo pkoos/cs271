@@ -11,8 +11,9 @@
 typedef int16_t hack_addr;
 typedef int16_t opcode;
 
-char *strip(char *s);
-void parse(FILE * file);
+char *strip(char *);
+void parse(FILE *);
 bool is_Atype(const char *);
 bool is_label(const char *);
 bool is_Ctype(const char *);
+char *extract_label(const char *, char *);
