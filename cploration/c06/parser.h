@@ -3,8 +3,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #define MAX_LINE_LENGTH 200
+#define MAX_LABEL_LENGTH (MAX_LINE_LENGTH - 2)
+
+typedef int16_t hack_addr;
+typedef int16_t opcode;
 
 char *strip(char *s);
 void parse(FILE * file);
