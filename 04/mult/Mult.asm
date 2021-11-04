@@ -10,18 +10,20 @@
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
 // Put your code here.
-@0
-D=A
+
 @R2
-M=D // initialize R2 to zero
+M=0 // initialize R2 to zero
+
 @R0
 D=M
-@POS
+@END
 D;JEQ // check if X=0
+
 @R1
 D=M
-@POS
+@END
 D;JEQ // check if y=0
+
 @R0
 D=M
 @R3 // prepare R3 to be used as looping mechanism. x is the loop variable
@@ -38,9 +40,6 @@ D=M
 D;JGT
 @END
 D;JEQ
-(POS)
-@R2
-M=D
 (END)
 @END
 0;JMP
