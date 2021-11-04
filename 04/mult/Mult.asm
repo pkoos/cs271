@@ -13,17 +13,14 @@
 
 @R2
 M=0 // initialize R2 to zero
-
 @R0
 D=M
 @END
 D;JEQ // check if X=0
-
 @R1
 D=M
 @END
 D;JEQ // check if y=0
-
 @R0
 D=M
 @R3 // prepare R3 to be used as looping mechanism. x is the loop variable
