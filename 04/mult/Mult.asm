@@ -40,3 +40,5 @@ D;JEQ
 (END)
 @END
 0;JMP
+
+// x * y == x + x, y times
