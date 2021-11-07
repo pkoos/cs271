@@ -12,6 +12,9 @@ void parse(FILE * file) {
             inst_type = 'A';
         } else if(is_label(line)) {
             inst_type = 'L';
+            char label[MAX_LABEL_LENGTH];
+            extract_label(line, label);
+            strcpy(line, label);
         } else if(is_Ctype(line)) {
             inst_type = 'C';
         }
@@ -34,6 +37,20 @@ char *strip(char *s) {
     strcpy(s, s_new);
     
     return s;
+}
+
+char *extract_label(const char* line, char * label) {    
+    int i = 0;
+    for(char *s2 = line;*s2;s2++) {
+        if(*s2 == '(' || *s2 == ')') {
+            continue;
+        } else {
+            label[i++] = *s2;
+        }
+    }
+    label[i] = '\0';
+
+    return label;
 }
 
 bool is_Atype(const char *line) {
