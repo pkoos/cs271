@@ -45,7 +45,7 @@ void display_table() {
 
     for(i = 0; i < SYMBOL_TABLE_SIZE; i++) {
         if(hashArray[i] != NULL) {
-            printf(" {%s, %d}", hashArray[i]->name, hashArray[i]->address);
+            printf(" (%s, %d) ", hashArray[i]->name, hashArray[i]->address);
         }
         else {
             printf(" ~~ ");
