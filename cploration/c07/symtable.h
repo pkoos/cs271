@@ -1,11 +1,12 @@
 #include<stdint.h>
+#include<stdlib.h>
 
 #define SYMBOL_TABLE_SIZE 100
 
 typedef int16_t hack_addr;
 typedef struct Symbol {
-    hack_addr addr;
-    char *name;
+    hack_addr value;
+    char *key;
 } Symbol;
 
 Symbol* hashArray[SYMBOL_TABLE_SIZE];
