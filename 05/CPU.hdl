@@ -39,5 +39,85 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+        // A: first Mux16 sel
+        Not(in=instruction[15], out=notOpCode);
+
+        Mux16(a=fromALU, b=instruction, sel=notOpCode, out=instructionOrALU);
+        
+        // B: ARegister load
+        Or(a=instruction[5], b=notOpCode, out=loadRegisterA);
+
+        ARegister(in=instructionOrALU, load=loadRegisterA, out=fromRegisterA, out[0..14]=addressM);
+        Mux16(a=fromRegisterA, b=inM, sel=AMSelector, out=AMOut);
+
+        // C: DRegister load
+        And(a=instruction[4], b=instruction[15], out=loadRegisterD);
+
+        DRegister(in=fromALU, load=loadRegisterD, out=fromRegisterD);
+
+        // D: ALU Control bits - Nothing special to do here
+
+        ALU(x=fromRegisterD, y=AMOut, 
+            zx=instruction[11], 
+            nx=instruction[10], 
+            zy=instruction[9], 
+            ny=instruction[8], 
+            f=instruction[7], 
+            no=instruction[6], 
+            out=fromALU,
+            out=outM, 
+            zr=zr, 
+            ng=ng);
+
+        // E: second Mux16 sel
+        And(a=instruction[12], b=instruction[15], out=AMSelector);
+
+        // F: PC load
+        // from the ALU
+        // zr, if output == 0
+        // ng, if output < 0
+        
+        Not(in=zr, out=notZero);
+        Not(in=ng, out=greaterEqualZero);
+        Or(a=zr, b=ng, out=lessEqualZero);
+
+        // JGT
+        And(a=notZero, b=greaterEqualZero, out=greaterZero);
+        And(a=greaterZero, b=instruction[0], out=JGT1);
+        And(a=JGT1, b=instruction[15], out=JGT);
+
+        // JEQ
+        And(a=zr, b=instruction[1], out=JEQ1);
+        And(a=JEQ1, b=instruction[15], out=JEQ);
+
+        // JGE
+        And(a=instruction[0], b=instruction[1], out=j01);
+        And(a=j01, b=greaterEqualZero, out=JGE1);
+        And(a=JGE1, b=instruction[15], out=JGE);
+        
+        // JLT
+        And(a=ng, b=instruction[2], out=JLT1);
+        And(a=JLT1, b=instruction[15], out=JLT);
+
+        // JNE
+        And(a=instruction[0], b=instruction[2], out=j02);
+        And(a=notZero, b=j02, out=JNE1);
+        And(a=JNE1, b=instruction[15], out=JNE);
+        
+        // JLE
+        And(a=instruction[1], b=instruction[2], out=j12);
+        And(a=lessEqualZero, b=j12, out=JLE1);
+        And(a=JLE1, b=instruction[15], out=JLE);
+        
+        // JMP
+        And(a=j01, b=j02, out=JMP1); // all bits are set to 1
+        And(a=JMP1, b=instruction[15], out=JMP);
+
+
+        Or8Way(in[0]=JGT, in[1]=JEQ, in[2]=JGE, in[3]=JLT, in[4]=JNE, in[5]=JLE, in[6]=JMP,in[7]=false, out=loadPC);
+        
+        PC(in=fromRegisterA, load=loadPC, inc=true, reset=reset, out[0..14]=pc);
+
+        // G: writeM
+        And(a=instruction[3], b=instruction[15], out=writeM);
 }
