@@ -1,3 +1,6 @@
+#ifndef __SYMTABLE_H__
+#define __SYMTABLE_H__
+
 #include<stdint.h>
 #include<stdlib.h>
 #include<stdio.h>
@@ -16,3 +19,5 @@ int hash(char *);
 Symbol *find(char *);
 void insert(char *, hack_addr);
 void display_table();
+
+#endif
