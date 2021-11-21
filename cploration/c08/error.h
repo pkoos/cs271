@@ -8,7 +8,9 @@
 enum exitcode {
     EXIT_INCORRECT_ARGUMENTS = 1,
     EXIT_CANNOT_OPEN_FILE,
-    EXIT_TOO_MANY_INSTRUCTIONS
+    EXIT_TOO_MANY_INSTRUCTIONS, 
+    EXIT_INVALID_LABEL,
+    EXIT_SYMBOL_ALREADY_EXISTS,
 };
 
 void exit_program(enum exitcode, ...);
