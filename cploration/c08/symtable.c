@@ -10,7 +10,7 @@ int hash(char *str) {
     return hash % SYMBOL_TABLE_SIZE;
 }
 
-void insert(char *name, hack_addr value) {
+void symtable_insert(char *name, hack_addr value) {
     Symbol *item = (Symbol*) malloc(sizeof(Symbol));
     item->address = value;
     item->name = name;
@@ -25,7 +25,7 @@ void insert(char *name, hack_addr value) {
     hashArray[hashIndex] = item;
 }
 
-Symbol *find(char *name) {
+Symbol *symtable_find(char *name) {
     int hashIndex = hash(name);
 
     while(hashArray[hashIndex] != NULL) {
@@ -40,7 +40,7 @@ Symbol *find(char *name) {
     return NULL;
 }
 
-void display_table() {
+void symtable_display_table() {
     int i = 0;
 
     for(i = 0; i < SYMBOL_TABLE_SIZE; i++) {
