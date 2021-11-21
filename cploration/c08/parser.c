@@ -1,11 +1,18 @@
 #include "parser.h"
+#include "error.h"
 
 void parse(FILE * file) {
     char line[MAX_LINE_LENGTH] = {0};
+    unsigned int line_num = 0;
+    unsigned int instr_num = 0;
     
 
     while(fgets(line, sizeof(line), file)) {
+        line_num++;
         char inst_type = ' ';
+        if(instr_num > MAX_INSTRUCTIONS) {
+            exit_program(EXIT_TOO_MANY_INSTRUCTIONS, MAX_INSTRUCTIONS+1);
+        }
         strip(line);
         if(!*line) { continue; }
         if(is_Atype(line)) {
@@ -19,6 +26,7 @@ void parse(FILE * file) {
             inst_type = 'C';
         }
         printf("%c  %s\n",inst_type, line);
+        instr_num++;
     }
 }
 
