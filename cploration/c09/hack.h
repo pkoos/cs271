@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 typedef struct predefined_symbol {
-    char * name;
+    char name[8];
     int16_t address;
 } predefined_symbol;
 
