@@ -23,6 +23,7 @@ void symtable_insert(char *name, hack_addr value) {
     }
 
     hashArray[hashIndex] = item;
+    free(item);
 }
 
 Symbol *symtable_find(char *name) {

@@ -7,6 +7,7 @@ void parse(FILE * file) {
     unsigned int line_num = 0;
     unsigned int instr_num = 0;
     
+    add_predefined_symbols();
 
     while(fgets(line, sizeof(line), file)) {
         line_num++;
@@ -83,4 +84,38 @@ bool is_label(const char *line) {
 
 bool is_Ctype(const char *line) {
     return !is_Atype(line) && !is_label(line);
+}
+
+void add_predefined_symbols() {
+    for(int i = 0; i < NUM_PREDEFINED_SYMBOLS; i++) {
+        // printf("Inserting: %s %d\n", predefined_symbols[i].name, predefined_symbols[i].address);
+        symtable_insert(
+            (char *) predefined_symbols[i].name, // cast const away
+            predefined_symbols[i].address
+            );
+    }
+}
+
+bool parse_A_instruction(const char *line, a_instruction *instr) {
+    
+    char *s = (char*) malloc(strlen(line+1));
+    strcpy(s, line+1);
+    
+    char *s_end = NULL;
+    long result = strtol(s, &s_end, 10);
+    
+    if(s == s_end) {
+        instr->address.label = (char *) malloc(sizeof(*line));
+        strcpy(instr->address.label,s);
+        instr->is_addr = false;
+    }
+    else if(*s_end != 0) {
+        return false;
+    }
+    else {
+        instr->address.address = result;
+        instr->is_addr = true;
+    }
+    
+    return true;
 }
