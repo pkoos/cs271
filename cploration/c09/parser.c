@@ -6,6 +6,7 @@ void parse(FILE * file) {
     char line[MAX_LINE_LENGTH] = {0};
     unsigned int line_num = 0;
     unsigned int instr_num = 0;
+    instruction instr;
     
     add_predefined_symbols();
 
@@ -18,6 +19,9 @@ void parse(FILE * file) {
         strip(line);
         if(!*line) { continue; }
         if(is_Atype(line)) {
+            if(!parse_A_instruction(line, &instr.instr_type.a_inst)) {
+                exit_program(EXIT_INVALID_A_INSTR, line_num, line);
+            }
             inst_type = 'A';
         } else if(is_label(line)) {
             inst_type = 'L';
@@ -98,24 +102,25 @@ void add_predefined_symbols() {
 
 bool parse_A_instruction(const char *line, a_instruction *instr) {
     
-    char *s = (char*) malloc(strlen(line+1));
+    char *s = (char*) malloc(strlen(line)+1);
     strcpy(s, line+1);
     
     char *s_end = NULL;
     long result = strtol(s, &s_end, 10);
     
     if(s == s_end) {
-        instr->address.label = (char *) malloc(sizeof(*line));
+        instr->address.label = (char *) malloc(strlen(line)+1);
         strcpy(instr->address.label,s);
         instr->is_addr = false;
     }
     else if(*s_end != 0) {
+        free(s);
         return false;
     }
     else {
         instr->address.address = result;
         instr->is_addr = true;
     }
-    
+    free(s);
     return true;
 }

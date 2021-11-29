@@ -11,6 +11,7 @@ enum exitcode {
     EXIT_TOO_MANY_INSTRUCTIONS, 
     EXIT_INVALID_LABEL,
     EXIT_SYMBOL_ALREADY_EXISTS,
+    EXIT_INVALID_A_INSTR,
 };
 
 void exit_program(enum exitcode, ...);

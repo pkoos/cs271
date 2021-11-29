@@ -4,11 +4,6 @@
 #define NUM_PREDEFINED_SYMBOLS 23
 #include <stdint.h>
 
-typedef struct predefined_symbol {
-    char name[10];
-    int16_t address;
-} predefined_symbol;
-
 enum symbol_id {
     SYM_RO = 0,
     SYM_R1, 
@@ -34,6 +29,11 @@ enum symbol_id {
     SYM_SCREEN = 16384,
     SYM_KBD = 24576
 };
+
+typedef struct predefined_symbol {
+    char name[10];
+    int16_t address;
+} predefined_symbol;
 
 static const predefined_symbol predefined_symbols[NUM_PREDEFINED_SYMBOLS] = {
     {{"R0"}, SYM_RO},
