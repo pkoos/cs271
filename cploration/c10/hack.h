@@ -145,7 +145,7 @@ static inline jump_id str_to_jumpid(const char *s) {
     else if(strcmp(s, "JMP")) {
         id = JMP_JMP;
     }
-    
+
     return id;                       
 }
 
@@ -176,6 +176,106 @@ static inline dest_id str_to_dest_id(const char *s) {
         id = DEST_ADM;
     }
 
+    return id;
+}
+
+static inline comp_id str_to_compid(const char *s, int *a) {
+    comp_id id = COMP_INVALID;
+    *a = 0;
+    if(s == 0) {
+        id = COMP_0;
+    }
+    else if(s == 1) {
+        id = COMP_1;
+    }
+    else if(s == -1) {
+        id = COMP_NEG_1;
+    }
+    else if(strcmp(s, "D")) {
+        id = COMP_D;
+    }
+    else if(strcmp(s, "A")) {
+        id = COMP_A;
+    }
+    else if(strcmp(s, "M")) {
+        id = COMP_M;
+        *a = 1;
+    }
+    else if(strcmp(s, "!D")) {
+        id = COMP_NOT_D;
+    }
+    else if(strcmp(s, "!A")) {
+        id = COMP_NOT_A;
+    }
+    else if(strcmp(s, "!M")) {
+        id = COMP_NOT_M;
+        *a = 1;
+    }
+    else if(strcmp(s, "-D")) {
+        id = COMP_NEG_D;
+    }
+    else if(strcmp(s, "-A")) {
+        id = COMP_NEG_A;
+    }
+    else if(strcmp(s, "-M")) {
+        id = COMP_NEG_M;
+        *a = 1;
+    }
+    else if(strcmp(s, "D+1")) {
+        id = COMP_D_PLUS_1;
+    }
+    else if(strcmp(s, "A+1")) {
+        id = COMP_A_PLUS_1;
+    }
+    else if(strcmp(s, "M+1")) {
+        id = COMP_M_PLUS_1;
+        *a = 1;
+    }
+    else if(strcmp(s, "D-1")) {
+        id = COMP_D_MINUS_1;
+    }
+    else if(strcmp(s, "A-1")) {
+        id = COMP_A_MINUS_1;
+    }
+    else if(strcmp(s, "M-1")) {
+        id = COMP_M_MINUS_1;
+        *a = 1;
+    }
+    else if(strcmp(s, "D+A")) {
+        id = COMP_D_PLUS_A;
+    }
+    else if(strcmp(s, "D+M")) {
+        id=COMP_D_PLUS_M;
+        *a = 1;
+    }
+    else if(strcmp(s, "D-A")) {
+        id = COMP_D_MINUS_A;
+    }
+    else if(strcmp(s, "D-M")) {
+        id = COMP_D_MINUS_M;
+        *a = 1;
+    }
+    else if(strcmp(s, "A-D")) {
+        id = COMP_A_MINUS_D;
+    }
+    else if(strcmp(s, "M-D")) {
+        id = COMP_M_MINUS_D;
+        *a = 1;
+    }
+    else if(strcmp(s, "D&A")) {
+        id = COMP_D_AND_A;
+    }
+    else if(strcmp(s, "D&M")) {
+        id = COMP_D_AND_M;
+        *a = 1;
+    }
+    else if(strcmp(s, "D|A")) {
+        id = COMP_D_BIN_OR_A;
+    }
+    else if(strcmp(s, "D|M")) {
+        id = COMP_D_BIN_OR_M;
+        *a = 1;
+    }
     return id;
 }
 
