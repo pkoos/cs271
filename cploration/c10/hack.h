@@ -54,6 +54,38 @@ enum dest_id {
     DEST_ADM
 };
 
+enum comp_id {
+    COMP_INVALID = -1,
+    COMP_0 = 42,
+    COMP_1 = 63,
+    COMP_NEG_1 = 56,
+    COMP_D = 12,
+    COMP_A = 48,
+    COMP_M = 48,
+    COMP_NOT_D = 13,
+    COMP_NOT_A = 49,
+    COMP_NOT_M = 49,
+    COMP_NEG_D = 15,
+    COMP_NEG_A = 51,
+    COMP_NEG_M = 51,
+    COMP_D_PLUS_1 = 31,
+    COMP_A_PLUS_1 = 55,
+    COMP_M_PLUS_1 = 55,
+    COMP_D_MINUS_1 = 14,
+    COMP_A_MINUS_1 = 50,
+    COMP_M_MINUS_1 = 50,
+    COMP_D_PLUS_A = 2,
+    COMP_D_PLUS_M = 2,
+    COMP_D_MINUS_A = 19,
+    COMP_D_MINUS_M = 19,
+    COMP_A_MINUS_D = 7,
+    COMP_M_MINUS_D = 7,
+    COMP_D_AND_A = 0,
+    COMP_D_AND_M = 0,
+    COMP_D_BIN_OR_A = 22,
+    COMP_D_BIN_OR_M = 22
+};
+
 typedef struct predefined_symbol {
     char name[10];
     int16_t address;
