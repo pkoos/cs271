@@ -42,6 +42,18 @@ enum jump_id {
     JMP_JMP
 };
 
+enum dest_id {
+    DEST_INVALID = -1,
+    DEST_NULL,
+    DEST_M,
+    DEST_D,
+    DEST_DM,
+    DEST_A,
+    DEST_AM,
+    DEST_AD,
+    DEST_ADM
+};
+
 typedef struct predefined_symbol {
     char name[10];
     int16_t address;
