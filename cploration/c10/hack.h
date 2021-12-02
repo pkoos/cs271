@@ -30,6 +30,18 @@ enum symbol_id {
     SYM_KBD = 24576
 };
 
+enum jump_id {
+    JMP_INVALID = -1,
+    JMP_NULL,
+    JMP_JGT,
+    JMP_JEQ,
+    JMP_JGE,
+    JMP_JLT,
+    JMP_JNE,
+    JMP_JLE,
+    JMP_JMP
+};
+
 typedef struct predefined_symbol {
     char name[10];
     int16_t address;
