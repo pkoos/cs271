@@ -124,3 +124,7 @@ bool parse_A_instruction(const char *line, a_instruction *instr) {
     free(s);
     return true;
 }
+
+void parse_C_instruction(char *line, c_instruction *instr) {
+
+}
