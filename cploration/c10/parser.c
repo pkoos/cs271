@@ -106,7 +106,6 @@ bool is_Ctype(const char *line) {
 
 void add_predefined_symbols() {
     for(int i = 0; i < NUM_PREDEFINED_SYMBOLS; i++) {
-        // printf("Inserting: %s %d\n", predefined_symbols[i].name, predefined_symbols[i].address);
         symtable_insert(
             (char *) predefined_symbols[i].name, // cast const away
             predefined_symbols[i].address
@@ -142,7 +141,10 @@ bool parse_A_instruction(const char *line, a_instruction *instr) {
 void parse_C_instruction(char *line, c_instruction *instr) {
 
     char delimiter[3] = "=;";
-    char *line_copy = line;
+    char * line_copy = malloc(sizeof(line) * strlen(line) + 1);
+    
+    strcpy(line_copy, line);
+    
     int i = 0;
     char * results[3];
     char * tok = strtok(line, delimiter);
@@ -153,32 +155,33 @@ void parse_C_instruction(char *line, c_instruction *instr) {
         tok = strtok(NULL, delimiter);
     }
 
-    if(strstr(line_copy, ";") != NULL && strstr(line_copy, "=") != NULL) {
-        // dest=comp;jump
+    if(strchr(line_copy, ';') != NULL && strchr(line_copy, '=') != NULL) {
+        // printf("dest=comp;jump\n");
         instr->dest = str_to_dest_id(results[0]);
         instr->comp = str_to_compid(results[1], &a);
-        instr->a = a;
+        instr->a = a == 1 ? instr->a & 0x1: 0;
 
     }
-    else if(strstr(line_copy, ";") != NULL) {
-        // comp;jump
+    else if(strchr(line_copy, ';') != NULL) {
+        // printf("comp;jump\n");
         instr->dest = 0;
         instr->comp = str_to_compid(results[0], &a);
         instr->jump = str_to_jumpid(results[1]);
         instr->a = a;
     }
-    else if(strstr(line_copy, "=") != NULL) {
-        // dest=comp
+    else if(strchr(line_copy, '=') != NULL) {
+        // printf("dest=comp\n");
         instr->dest = str_to_dest_id(results[0]);
         instr->comp = str_to_compid(results[1], &a);
         instr->jump = 0;
         instr->a = a;
     }
     else {
-        //comp
+        // printf("comp\n");
         instr->dest = 0;
         instr->comp = str_to_compid(results[0], &a);
         instr->jump = 0;
-        instr->a = a;
+        instr->a = a == 1 ? instr->a & 0x1: 0;
     }
+    free(line_copy);
 }
