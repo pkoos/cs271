@@ -48,7 +48,7 @@ typedef struct instruction {
 
 
 char *strip(char *);
-void parse(FILE *);
+int parse(FILE *, instruction *);
 bool is_Atype(const char *);
 bool is_label(const char *);
 bool is_Ctype(const char *);
