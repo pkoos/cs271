@@ -31,18 +31,21 @@ typedef struct a_instruction {
     bool is_addr;
 } a_instruction;
 
-typedef struct instruction {
-    union instr_type {
-        a_instruction a_inst;
-        c_instruction c_inst;
-    } instr_type;
-} instruction ;
-
-enum instruction_type {
+typedef enum instruction_type {
     invalid = -1,
     a_type,
     c_type
-};
+} instruction_type;
+
+typedef struct instruction {
+    union {
+        a_instruction a_inst;
+        c_instruction c_inst;
+    };
+    instruction_type inst_type;
+} instruction ;
+
+
 
 char *strip(char *);
 void parse(FILE *);

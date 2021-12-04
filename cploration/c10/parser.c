@@ -19,12 +19,12 @@ void parse(FILE * file) {
         strip(line);
         if(!*line) { continue; }
         if(is_Atype(line)) {
-            if(!parse_A_instruction(line, &instr.instr_type.a_inst)) {
+            if(!parse_A_instruction(line, &instr.a_inst)) {
                 exit_program(EXIT_INVALID_A_INSTR, line_num, line);
             }
+            instr.inst_type = a_type;
             inst_type = 'A';
         } else if(is_label(line)) {
-            inst_type = 'L';
             char label[MAX_LABEL_LENGTH];
             extract_label(line, label);
             if(!isalpha(label[0])) {
@@ -34,8 +34,22 @@ void parse(FILE * file) {
             }
             strcpy(line, label);
             symtable_insert(label, instr_num);
+            inst_type = 'L';
             continue;
         } else if(is_Ctype(line)) {
+            char tmp_line[MAX_LINE_LENGTH];
+            strcpy(tmp_line, line);
+            parse_C_instruction(tmp_line, &instr.c_inst);
+            if(instr.c_inst.dest == DEST_INVALID) {
+                exit_program(EXIT_INVALID_C_DEST);
+            }
+            else if(instr.c_inst.comp == COMP_INVALID) {
+                exit_program(EXIT_INVALID_C_COMP);
+            }
+            else if(instr.c_inst.jump == JMP_INVALID) {
+                exit_program(EXIT_INVALID_C_JUMP);
+            }
+            instr.inst_type = c_type;
             inst_type = 'C';
         }
         printf("%c  %s\n",inst_type, line);
