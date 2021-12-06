@@ -67,7 +67,7 @@ typedef enum dest_id {
     DEST_NULL,
     DEST_M,
     DEST_D,
-    DEST_DM,
+    DEST_MD,
     DEST_A,
     DEST_AM,
     DEST_AD,
@@ -144,25 +144,25 @@ static inline jump_id str_to_jumpid(const char *s) {
     if(s == NULL) {
         id = JMP_NULL;
     }
-    else if(strstr(s, "JGT") != NULL) {
+    else if(strcmp(s, "JGT") == 0) {
         id = JMP_JGT;
     }
-    else if(strstr(s, "JEQ") != NULL) {
+    else if(strcmp(s, "JEQ") == 0) {
         id = JMP_JEQ;
     }
-    else if(strstr(s, "JGE") != NULL) {
+    else if(strcmp(s, "JGE") == 0) {
         id = JMP_JGE;
     }
-    else if(strstr(s, "JLT") != NULL) {
+    else if(strcmp(s, "JLT") == 0) {
         id = JMP_JLT;
     }
-    else if(strstr(s, "JNE") != NULL) {
+    else if(strcmp(s, "JNE") == 0) {
         id = JMP_JNE;
     }
-    else if(strstr(s, "JLE") != NULL) {
+    else if(strcmp(s, "JLE") == 0) {
         id = JMP_JLE;
     }
-    else if(strstr(s, "JMP") != NULL) {
+    else if(strcmp(s, "JMP") == 0) {
         id = JMP_JMP;
     }
     return id;                       
@@ -175,25 +175,25 @@ static inline dest_id str_to_dest_id(const char *s) {
     if(s == NULL) {
         id = DEST_NULL;
     }
-    else if(strstr(s, "M") != NULL) {
+    else if(strcmp(s, "M") == 0) {
         id = DEST_M;
     }
-    else if(strstr(s, "D") != NULL) {
+    else if(strcmp(s, "D") == 0) {
         id = DEST_D;
     }
-    else if(strstr(s, "DM") != NULL) {
-        id = DEST_DM;
+    else if(strcmp(s, "MD") == 0) {
+        id = DEST_MD;
     }
-    else if(strstr(s, "A") != NULL) {
+    else if(strcmp(s, "A") == 0) {
         id = DEST_A;
     }
-    else if(strstr(s, "AM") != NULL) {
+    else if(strcmp(s, "AM") == 0) {
         id = DEST_AM;
     }
-    else if(strstr(s, "AD") != NULL) {
+    else if(strcmp(s, "AD") == 0) {
         id = DEST_AD;
     }
-    else if(strstr(s, "ADM") != NULL) {
+    else if(strcmp(s, "ADM") == 0) {
         id = DEST_ADM;
     }
     return id;
