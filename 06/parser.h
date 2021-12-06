@@ -24,10 +24,10 @@ typedef struct c_instruction {
 } c_instruction;
 
 typedef struct a_instruction {
-    union address {
+    union {
         hack_addr address;
         char * label;
-    } address;
+    };
     bool is_addr;
 } a_instruction;
 
@@ -57,5 +57,6 @@ void add_predefined_symbols();
 bool parse_A_instruction(const char *, a_instruction *);
 void parse_C_instruction(char *, c_instruction *);
 void assemble(const char *, instruction *, int);
+opcode instruction_to_opcode(c_instruction);
 
 #endif

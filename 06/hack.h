@@ -1,10 +1,28 @@
 #ifndef __HACK_H__
 #define __HACK_H__
 
-#define NUM_PREDEFINED_SYMBOLS 23
 #include <stdint.h>
 #include <string.h>
 
+#define NUM_PREDEFINED_SYMBOLS 23
+
+#define OPCODE_TO_BINARY(opcode) \
+  (opcode & 0x8000 ? '1' : '0'), \
+  (opcode & 0x4000 ? '1' : '0'), \
+  (opcode & 0x2000 ? '1' : '0'), \
+  (opcode & 0x1000 ? '1' : '0'), \
+  (opcode & 0x800 ? '1' : '0'), \
+  (opcode & 0x400 ? '1' : '0'), \
+  (opcode & 0x200 ? '1' : '0'), \
+  (opcode & 0x100 ? '1' : '0'), \
+  (opcode & 0x80 ? '1' : '0'), \
+  (opcode & 0x40 ? '1' : '0'), \
+  (opcode & 0x20 ? '1' : '0'), \
+  (opcode & 0x10 ? '1' : '0'), \
+  (opcode & 0x8 ? '1' : '0'), \
+  (opcode & 0x4 ? '1' : '0'), \
+  (opcode & 0x2 ? '1' : '0'), \
+  (opcode & 0x1 ? '1' : '0')
 
 typedef enum symbol_id {
     SYM_RO = 0,
