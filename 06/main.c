@@ -16,12 +16,10 @@ int main(int args, char *argv[]) {
     instruction * instructions = malloc(MAX_INSTRUCTION_COUNT * sizeof(instruction));
 
     int num_instructions = parse(fin, instructions);
+    
     fclose(fin);
     
-
     assemble(argv[1], instructions, num_instructions);
-
-    printf("Number of instructions: %d\n", num_instructions);
 
     free(instructions);
     return 0;
