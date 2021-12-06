@@ -5,7 +5,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-#define SYMBOL_TABLE_SIZE 1000
+#define SYMBOL_TABLE_SIZE 3500
 
 typedef int16_t hack_addr;
 typedef struct Symbol {
