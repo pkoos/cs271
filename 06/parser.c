@@ -9,7 +9,6 @@ int parse(FILE * file, instruction * instructions) {
     instruction instr;
     
     add_predefined_symbols();
-    // symtable_display_table();
 
     while(fgets(line, sizeof(line), file)) {
         line_num++;
@@ -33,10 +32,7 @@ int parse(FILE * file, instruction * instructions) {
             } else if(symtable_find(label)!= NULL) {
                 exit_program(EXIT_SYMBOL_ALREADY_EXISTS, line_num, line);
             }
-            // printf("Storage: %s, source: %s\n", line, label);
             strcpy(line, label);
-            // printf("After copy: %s\n", line);
-            // printf("Parse Label: %s, length: %lu, Instr_num: %d\n", label, strlen(label), instr_num);
             symtable_insert(label, instr_num);
             inst_type = 'L';
             continue;
@@ -59,7 +55,6 @@ int parse(FILE * file, instruction * instructions) {
         printf("%d: %c  %s\n",line_num, inst_type, line);
         instructions[instr_num++] = instr;
     }
-    // symtable_display_table();
     return instr_num;
 }
 
@@ -112,7 +107,6 @@ bool is_Ctype(const char *line) {
 
 void add_predefined_symbols() {
     for(int i = 0; i < NUM_PREDEFINED_SYMBOLS; i++) {
-        // printf("Name: %s, address: %d\n", (char *) predefined_symbols[i].name, predefined_symbols[i].address);
         symtable_insert(
             (char *) predefined_symbols[i].name, // cast const away
             predefined_symbols[i].address
@@ -163,28 +157,28 @@ void parse_C_instruction(char *line, c_instruction *instr) {
     }
 
     if(strchr(line_copy, ';') != NULL && strchr(line_copy, '=') != NULL) {
-        // printf("dest=comp;jump\n");
+        // dest=comp;jump
         instr->dest = str_to_dest_id(results[0]);
         instr->comp = str_to_compid(results[1], &a);
         instr->a = a;
 
     }
     else if(strchr(line_copy, ';') != NULL) {
-        // printf("comp;jump\n");
+        // comp;jump
         instr->dest = 0;
         instr->comp = str_to_compid(results[0], &a);
         instr->jump = str_to_jumpid(results[1]);
         instr->a = a;
     }
     else if(strchr(line_copy, '=') != NULL) {
-        // printf("dest=comp\n");
+        // dest=comp
         instr->dest = str_to_dest_id(results[0]);
         instr->comp = str_to_compid(results[1], &a);
         instr->jump = 0;
         instr->a = a;
     }
     else {
-        // printf("comp\n");
+        // comp
         instr->dest = 0;
         instr->comp = str_to_compid(results[0], &a);
         instr->jump = 0;
@@ -203,15 +197,17 @@ opcode instruction_to_opcode(c_instruction instr) {
     return op;
 }
 
+void binary_to_file(FILE *fout, opcode op) {
+    fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
+}
+
 void assemble(const char * file_name, instruction * instructions, int num_instructions) {
-    // symtable_display_table();
     int i = 0;
     int sym_location = 16;
 
     char out_file[35];
     strcpy(out_file, file_name);
     strcat(out_file, ".hack");
-    // printf("Out file name: %s\n", out_file);
 
     FILE *fout = fopen(out_file, "w+");
 
@@ -221,37 +217,26 @@ void assemble(const char * file_name, instruction * instructions, int num_instru
         if(instr.inst_type == a_type) {
             if(instr.a_inst.is_addr) {
                 op = instr.a_inst.address;
-                // printf("A Instruction address: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
-                fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
+                binary_to_file(fout, op);
             }
             else { // label
-                // printf("A instruction Label: %s, length: %lu\n", instr.a_inst.label, strlen(instr.a_inst.label));
-                // Symbol *sym = (Symbol*) malloc(sizeof(Symbol));
                 Symbol * sym = symtable_find(instr.a_inst.label);
-                // printf("Symtable Label: %s, Address: %d\n", sym != NULL ? sym->name : "Null", sym != NULL ? sym->address : 69);
                 if(sym != NULL) { // label already exists
                     op = sym->address;
-                    // printf("A Instruction Existing Label: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
-                    fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
-                    // convert symbol to opcode
+                    binary_to_file(fout, op);
                 }
                 else {
                     symtable_insert(instr.a_inst.label, sym_location);
-                    //sym = symtable_find(instr.a_inst.label);
-                    // op = sym->address;
                     op = sym_location;
-                    // printf("A Instruction new label: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
-                    fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
+                    binary_to_file(fout, op);
                     sym_location++;
                     
                 }
-                // free(sym);
             }
         }
         else if(instr.inst_type == c_type) {
             op = instruction_to_opcode(instr.c_inst);
-            // printf("C Instruction: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
-            fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
+            binary_to_file(fout, op);
         }
     }
 
