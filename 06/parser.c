@@ -214,6 +214,7 @@ void assemble(const char * file_name, instruction * instructions, int num_instru
         if(instr.inst_type == a_type) {
             if(instr.a_inst.is_addr) {
                 op = instr.a_inst.address;
+                printf("A Instruction address: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
                 fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
             }
             else { // label
@@ -221,12 +222,14 @@ void assemble(const char * file_name, instruction * instructions, int num_instru
                 sym = symtable_find(instr.a_inst.label);
                 if(sym != NULL) { // label already exists
                     op = sym->address;
+                    printf("A Instruction Existing Label: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
                     fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
                     // convert symbol to opcode
                 }
                 else {
                     symtable_insert(instr.a_inst.label, sym_location++);
                     op = instr.a_inst.address;
+                    printf("A Instruction new label: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
                     fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
                     
                 }
@@ -235,6 +238,7 @@ void assemble(const char * file_name, instruction * instructions, int num_instru
         }
         else if(instr.inst_type == c_type) {
             op = instruction_to_opcode(instr.c_inst);
+            printf("C Instruction: %d, bianry: %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", op, OPCODE_TO_BINARY(op));
             fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
         }
     }
