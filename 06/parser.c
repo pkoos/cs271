@@ -201,6 +201,30 @@ void binary_to_file(FILE *fout, opcode op) {
     fprintf(fout, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n", OPCODE_TO_BINARY(op));
 }
 
+int convert_A_instruction(FILE *fout, instruction instr, int sym_location) {
+    if(instr.a_inst.is_addr) {
+        binary_to_file(fout, instr.a_inst.address);
+    }
+    else { // label
+        Symbol * sym = symtable_find(instr.a_inst.label);
+        if(sym != NULL) { // label already exists
+            binary_to_file(fout, sym->address);
+        }
+        else {
+            symtable_insert(instr.a_inst.label, sym_location);
+            binary_to_file(fout, sym_location);
+            sym_location++;        
+        }
+    }
+    return sym_location;
+}
+
+void convert_C_instruction(FILE * fout, instruction instr) {
+    opcode op;
+    op = instruction_to_opcode(instr.c_inst);
+    binary_to_file(fout, op);    
+}
+
 void assemble(const char * file_name, instruction * instructions, int num_instructions) {
     int i = 0;
     int sym_location = 16;
@@ -212,31 +236,14 @@ void assemble(const char * file_name, instruction * instructions, int num_instru
     FILE *fout = fopen(out_file, "w+");
 
     for(;i < num_instructions; i++) {
-        opcode op;
+        
         instruction instr = instructions[i];
+        
         if(instr.inst_type == a_type) {
-            if(instr.a_inst.is_addr) {
-                op = instr.a_inst.address;
-                binary_to_file(fout, op);
-            }
-            else { // label
-                Symbol * sym = symtable_find(instr.a_inst.label);
-                if(sym != NULL) { // label already exists
-                    op = sym->address;
-                    binary_to_file(fout, op);
-                }
-                else {
-                    symtable_insert(instr.a_inst.label, sym_location);
-                    op = sym_location;
-                    binary_to_file(fout, op);
-                    sym_location++;
-                    
-                }
-            }
+            sym_location = convert_A_instruction(fout, instr, sym_location);
         }
-        else if(instr.inst_type == c_type) {
-            op = instruction_to_opcode(instr.c_inst);
-            binary_to_file(fout, op);
+        else {
+            convert_C_instruction(fout, instr);
         }
     }
 
